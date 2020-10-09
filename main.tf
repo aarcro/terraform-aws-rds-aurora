@@ -1,11 +1,11 @@
 locals {
   port                 = var.port == "" ? var.engine == "aurora-postgresql" ? "5432" : "3306" : var.port
-  master_password      = var.password == "" ? random_id.master_password.b64 : var.password
+  master_password      = var.password == "" ? random_password.master_password.result : var.password
   db_subnet_group_name = var.db_subnet_group_name == "" ? aws_db_subnet_group.this[0].name : var.db_subnet_group_name
 }
 
 # Random string to use as master password unless one is specified
-resource "random_id" "master_password" {
+resource "random_password" "master_password" {
   byte_length = 10
 }
 
